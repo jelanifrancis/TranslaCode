@@ -13,35 +13,53 @@ export interface Translations {
   errorTitle: string;
   errorMessage: string;
   footerText: string;
+  nextChallengeButton: string;
+  languageSelectLabel: string;
+  progLangSelectJS: string;
+  progLangSelectPython: string;
+  completedChallengesLabel: string;
+  noMoreChallenges: string;
 }
 
 export const translations: Record<LanguageKey, Translations> = {
   en: {
     challengeTitle: "Coding Challenge",
     codeEditorTitle: "Your Solution",
-    languageIndicator: "JavaScript",
+    languageIndicator: "Language",
     exampleHeader: "Example:",
     exampleTest: "Input:",
     exampleResult: "Output:",
     submitButton: "Submit Solution",
     successTitle: "Great job!",
-    successMessage: "Your solution works correctly. The function successfully adds two numbers together.",
+    successMessage: "Your solution works correctly!",
     errorTitle: "Not quite right",
-    errorMessage: "Your solution doesn't seem to correctly add the two numbers. Try again!",
-    footerText: "TranslaCode - Learn coding in multiple languages"
+    errorMessage: "Your solution doesn't work correctly. Try again!",
+    footerText: "TranslaCode - Learn coding in multiple languages",
+    nextChallengeButton: "Next Challenge",
+    languageSelectLabel: "Programming Language:",
+    progLangSelectJS: "JavaScript",
+    progLangSelectPython: "Python",
+    completedChallengesLabel: "Completed Challenges:",
+    noMoreChallenges: "You've completed all challenges! Great work!"
   },
   es: {
     challengeTitle: "Desafío de Programación",
     codeEditorTitle: "Tu Solución",
-    languageIndicator: "JavaScript",
+    languageIndicator: "Lenguaje",
     exampleHeader: "Ejemplo:",
     exampleTest: "Entrada:",
     exampleResult: "Salida:",
     submitButton: "Enviar Solución",
     successTitle: "¡Buen trabajo!",
-    successMessage: "Tu solución funciona correctamente. La función suma dos números correctamente.",
+    successMessage: "¡Tu solución funciona correctamente!",
     errorTitle: "No está del todo bien",
-    errorMessage: "Tu solución no parece sumar correctamente los dos números. ¡Inténtalo de nuevo!",
-    footerText: "TranslaCode - Aprende programación en varios idiomas"
+    errorMessage: "Tu solución no funciona correctamente. ¡Inténtalo de nuevo!",
+    footerText: "TranslaCode - Aprende programación en varios idiomas",
+    nextChallengeButton: "Siguiente Desafío",
+    languageSelectLabel: "Lenguaje de Programación:",
+    progLangSelectJS: "JavaScript",
+    progLangSelectPython: "Python",
+    completedChallengesLabel: "Desafíos Completados:",
+    noMoreChallenges: "¡Has completado todos los desafíos! ¡Excelente trabajo!"
   }
 };
