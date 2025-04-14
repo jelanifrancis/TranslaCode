@@ -19,6 +19,7 @@ export interface Translations {
   progLangSelectPython: string;
   completedChallengesLabel: string;
   noMoreChallenges: string;
+  lessonHeader: string;
 }
 
 export const translations: Record<LanguageKey, Translations> = {
@@ -40,7 +41,8 @@ export const translations: Record<LanguageKey, Translations> = {
     progLangSelectJS: "JavaScript",
     progLangSelectPython: "Python",
     completedChallengesLabel: "Completed Challenges:",
-    noMoreChallenges: "You've completed all challenges! Great work!"
+    noMoreChallenges: "You've completed all challenges! Great work!",
+    lessonHeader: "Learning Lesson:"
   },
   es: {
     challengeTitle: "Desafío de Programación",
@@ -60,6 +62,7 @@ export const translations: Record<LanguageKey, Translations> = {
     progLangSelectJS: "JavaScript",
     progLangSelectPython: "Python",
     completedChallengesLabel: "Desafíos Completados:",
-    noMoreChallenges: "¡Has completado todos los desafíos! ¡Excelente trabajo!"
+    noMoreChallenges: "¡Has completado todos los desafíos! ¡Excelente trabajo!",
+    lessonHeader: "Lección de Aprendizaje:"
   }
 };

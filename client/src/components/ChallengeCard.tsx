@@ -14,7 +14,7 @@ export default function ChallengeCard({ challenge }: ChallengeCardProps) {
         {t.challengeTitle}
       </h2>
       
-      <div className="mb-6">
+      <div className="mb-4">
         <h3 className="text-lg font-medium text-gray-700 mb-2">
           {challenge.title}
         </h3>
@@ -23,7 +23,16 @@ export default function ChallengeCard({ challenge }: ChallengeCardProps) {
         </p>
       </div>
       
-      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 rounded-r">
+        <h4 className="text-sm font-medium text-yellow-800 mb-1">
+          {t.lessonHeader}
+        </h4>
+        <p className="text-sm text-yellow-700">
+          {challenge.lesson}
+        </p>
+      </div>
+      
+      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-2 rounded-r">
         <h4 className="text-sm font-medium text-blue-700 mb-1">
           {t.exampleHeader}
         </h4>
