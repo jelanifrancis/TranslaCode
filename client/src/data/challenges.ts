@@ -24,8 +24,8 @@ export const challenges: Record<string, ChallengeData> = {
     },
     validator: validateAddition,
     defaultCode: {
-      javascript: "// Write your function here\nfunction sum(a, b) {\n  // Your code here\n}",
-      python: "# Write your function here\ndef sum(a, b):\n    # Your code here\n    pass"
+      javascript: "// Write your function here\n// Escribe tu función aquí\nfunction sum(a, b) {\n  // Your code here\n  // Tu código aquí\n}",
+      python: "# Write your function here\n# Escribe tu función aquí\ndef sum(a, b):\n    # Your code here\n    # Tu código aquí\n    pass"
     }
   },
   findMaximum: {
@@ -39,8 +39,8 @@ export const challenges: Record<string, ChallengeData> = {
     },
     validator: validateMaximum,
     defaultCode: {
-      javascript: "// Write your function here\nfunction findMax(a, b, c) {\n  // Your code here\n}",
-      python: "# Write your function here\ndef findMax(a, b, c):\n    # Your code here\n    pass"
+      javascript: "// Write your function here\n// Escribe tu función aquí\nfunction findMax(a, b, c) {\n  // Your code here\n  // Tu código aquí\n}",
+      python: "# Write your function here\n# Escribe tu función aquí\ndef findMax(a, b, c):\n    # Your code here\n    # Tu código aquí\n    pass"
     }
   },
   reverseString: {
@@ -54,8 +54,8 @@ export const challenges: Record<string, ChallengeData> = {
     },
     validator: validateStringReverse,
     defaultCode: {
-      javascript: "// Write your function here\nfunction reverseString(s) {\n  // Your code here\n}",
-      python: "# Write your function here\ndef reverseString(s):\n    # Your code here\n    pass"
+      javascript: "// Write your function here\n// Escribe tu función aquí\nfunction reverseString(s) {\n  // Your code here\n  // Tu código aquí\n}",
+      python: "# Write your function here\n# Escribe tu función aquí\ndef reverseString(s):\n    # Your code here\n    # Tu código aquí\n    pass"
     }
   }
 };
