@@ -22,13 +22,12 @@ function App() {
   const languageContext = useLanguageProvider();
   const [user, setUser] = useState<any>(null);
 
-  // Get current user on load
+  // Check for user on load and subscribe to auth changes
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
     });
 
-    // Listen for login/logout
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
     });
@@ -38,10 +37,29 @@ function App() {
     };
   }, []);
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    window.location.reload();
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageContext.Provider value={languageContext}>
-        {user ? <Router /> : <AuthForm />}
+        {user ? (
+          <>
+            <div className="p-4 text-right">
+              <button
+                onClick={handleLogout}
+                className="text-sm text-red-500 hover:underline"
+              >
+                Log out
+              </button>
+            </div>
+            <Router />
+          </>
+        ) : (
+          <AuthForm />
+        )}
         <Toaster />
       </LanguageContext.Provider>
     </QueryClientProvider>
