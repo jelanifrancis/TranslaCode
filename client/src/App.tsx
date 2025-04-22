@@ -50,7 +50,7 @@ function App() {
             <div className="p-4 text-right">
               <button
                 onClick={handleLogout}
-                className="text-sm text-red-500 hover:underline"
+                className="text-sm text-blue-600 hover:text-yellow-400 transition-colors"
               >
                 Log out
               </button>
