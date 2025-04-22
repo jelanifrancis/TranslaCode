@@ -10,12 +10,14 @@ import ResultMessage from '../components/ResultMessage';
 import Footer from '../components/Footer';
 import LanguageToggle from '../components/LanguageToggle';
 import ProgrammingLanguageToggle from '../components/ProgrammingLanguageToggle';
+import ChallengeLibrary from '../components/ChallengeLibrary';
 
 export default function Home() {
   const { t, currentLanguage } = useLanguage();
   const [currentChallengeKey, setCurrentChallengeKey] = useState('addNumbers');
   const [completedChallenges, setCompletedChallenges] = useState<string[]>([]);
   const [programmingLanguage, setProgrammingLanguage] = useState<ProgrammingLanguage>('javascript');
+  const [showLibrary, setShowLibrary] = useState(false);
   
   const currentChallenge = challenges[currentChallengeKey];
   
@@ -67,16 +69,26 @@ export default function Home() {
     return currentIndex < challengeKeys.length - 1;
   };
 
+  const toggleLibrary = () => {
+    setShowLibrary(!showLibrary);
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col items-center pt-8 pb-16">
       <AppHeader />
       
       <main className="w-full max-w-3xl px-4">
         <div className="flex justify-between items-center mb-6">
-          <div>
+          <div className="flex space-x-4 items-center">
             <p className="text-sm text-gray-600">
               {t.completedChallengesLabel} <span className="font-medium">{completedChallenges.length}/{Object.keys(challenges).length}</span>
             </p>
+            <button 
+              onClick={toggleLibrary}
+              className="px-4 py-1 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+            >
+              {t.libraryButton}
+            </button>
           </div>
           <LanguageToggle />
         </div>
@@ -118,6 +130,16 @@ export default function Home() {
       </main>
       
       <Footer />
+      
+      {/* Challenge Library Modal */}
+      {showLibrary && (
+        <ChallengeLibrary
+          completedChallenges={completedChallenges}
+          currentChallengeKey={currentChallengeKey}
+          onSelectChallenge={setCurrentChallengeKey}
+          onClose={toggleLibrary}
+        />
+      )}
     </div>
   );
 }
