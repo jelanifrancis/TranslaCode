@@ -20,6 +20,15 @@ export interface Translations {
   completedChallengesLabel: string;
   noMoreChallenges: string;
   lessonHeader: string;
+  libraryButton: string;
+  libraryTitle: string;
+  libraryDescription: string;
+  selectChallengeButton: string;
+  backToCurrentButton: string;
+  difficultyLabel: string;
+  difficultyBeginner: string;
+  difficultyIntermediate: string;
+  difficultyAdvanced: string;
 }
 
 export const translations: Record<LanguageKey, Translations> = {
@@ -42,7 +51,16 @@ export const translations: Record<LanguageKey, Translations> = {
     progLangSelectPython: "Python",
     completedChallengesLabel: "Completed Challenges:",
     noMoreChallenges: "You've completed all challenges! Great work!",
-    lessonHeader: "Learning Lesson:"
+    lessonHeader: "Learning Lesson:",
+    libraryButton: "Challenge Library",
+    libraryTitle: "Challenge Library",
+    libraryDescription: "Choose from our collection of coding challenges to practice your skills:",
+    selectChallengeButton: "Select Challenge",
+    backToCurrentButton: "Back to Current Challenge",
+    difficultyLabel: "Difficulty:",
+    difficultyBeginner: "Beginner",
+    difficultyIntermediate: "Intermediate",
+    difficultyAdvanced: "Advanced"
   },
   es: {
     challengeTitle: "Desafío de Programación",
@@ -63,6 +81,15 @@ export const translations: Record<LanguageKey, Translations> = {
     progLangSelectPython: "Python",
     completedChallengesLabel: "Desafíos Completados:",
     noMoreChallenges: "¡Has completado todos los desafíos! ¡Excelente trabajo!",
-    lessonHeader: "Lección de Aprendizaje:"
+    lessonHeader: "Lección de Aprendizaje:",
+    libraryButton: "Biblioteca de Desafíos",
+    libraryTitle: "Biblioteca de Desafíos",
+    libraryDescription: "Elige entre nuestra colección de desafíos de programación para practicar tus habilidades:",
+    selectChallengeButton: "Seleccionar Desafío",
+    backToCurrentButton: "Volver al Desafío Actual",
+    difficultyLabel: "Dificultad:",
+    difficultyBeginner: "Principiante",
+    difficultyIntermediate: "Intermedio",
+    difficultyAdvanced: "Avanzado"
   }
 };

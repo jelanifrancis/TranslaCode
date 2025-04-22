@@ -1,5 +1,7 @@
 import { validateAddition, validateMaximum, validateStringReverse, type ProgrammingLanguage } from '../lib/codeValidator';
 
+export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
+
 export interface Challenge {
   title: string;
   description: string;
@@ -9,6 +11,7 @@ export interface Challenge {
 export interface ChallengeData {
   en: Challenge;
   es: Challenge;
+  difficulty: DifficultyLevel;
   validator: (code: string, language: ProgrammingLanguage) => boolean;
   defaultCode: Record<ProgrammingLanguage, string>;
 }
@@ -25,6 +28,7 @@ export const challenges: Record<string, ChallengeData> = {
       description: "Crea una función llamada 'sum' que tome dos parámetros 'a' y 'b' y devuelva su suma.",
       lesson: "Este desafío introduce el concepto básico de funciones. Una función es un bloque de código reutilizable que realiza una tarea específica. En este caso, la función 'sum' toma dos parámetros de entrada y devuelve su suma. Las funciones ayudan a organizar el código, hacerlo reutilizable y mejorar su mantenimiento. Los parámetros son variables que reciben valores cuando se llama a la función."
     },
+    difficulty: 'beginner',
     validator: validateAddition,
     defaultCode: {
       javascript: "// Write your function here\n// Escribe tu función aquí\nfunction sum(a, b) {\n  // Your code here\n  // Tu código aquí\n}",
@@ -42,6 +46,7 @@ export const challenges: Record<string, ChallengeData> = {
       description: "Crea una función llamada 'findMax' que tome tres parámetros 'a', 'b' y 'c' y devuelva el valor máximo.",
       lesson: "Este desafío te enseña sobre operaciones de comparación y toma de decisiones. Para encontrar el valor máximo, necesitas comparar números y determinar cuál es el más grande. Esto introduce declaraciones condicionales (if/else) y operadores lógicos. Hay múltiples enfoques: usar Math.max() en JavaScript o max() en Python, o escribir tu propia lógica de comparación con declaraciones if para determinar el valor más grande."
     },
+    difficulty: 'beginner',
     validator: validateMaximum,
     defaultCode: {
       javascript: "// Write your function here\n// Escribe tu función aquí\nfunction findMax(a, b, c) {\n  // Your code here\n  // Tu código aquí\n}",
@@ -59,6 +64,7 @@ export const challenges: Record<string, ChallengeData> = {
       description: "Crea una función llamada 'reverseString' que tome un parámetro string 's' y devuelva la cadena invertida.",
       lesson: "Este desafío introduce la manipulación de cadenas de texto, un concepto fundamental en programación. Las cadenas son secuencias de caracteres que pueden manipularse de varias formas. Para invertir una cadena, necesitas saber cómo acceder a caracteres individuales, iterar a través de la cadena y construir una nueva cadena en orden inverso. En JavaScript, podrías usar métodos como split(), reverse() y join(), o un bucle for. En Python, puedes usar rebanado de cadenas con un paso negativo (s[::-1]), o técnicas de bucle."
     },
+    difficulty: 'intermediate',
     validator: validateStringReverse,
     defaultCode: {
       javascript: "// Write your function here\n// Escribe tu función aquí\nfunction reverseString(s) {\n  // Your code here\n  // Tu código aquí\n}",
