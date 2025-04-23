@@ -1,18 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Route, Switch } from 'wouter';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/queryClient';
 import { Toaster } from '@/components/ui/toaster';
 import NotFound from '@/pages/not-found';
 import Home from './pages/Home';
+import Tutorials from './pages/Tutorials';
+import PythonVariables from './pages/tutorials/PythonVariables';
+import PythonFunctions from './pages/tutorials/PythonFunctions';
+import PythonConditionals from './pages/tutorials/PythonConditionals';
+import JavaScriptVariables from './pages/tutorials/JavaScriptVariables';
+import JavaScriptFunctions from './pages/tutorials/JavaScriptFunctions';
+import JavaScriptConditionals from './pages/tutorials/JavaScriptConditionals';
 import { LanguageContext, useLanguageProvider } from './hooks/useLanguage';
-import { supabase } from './supabaseClient';
-import AuthForm from './components/AuthForm';
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/tutorials" component={Tutorials} />
+      <Route path="/tutorials/python/variables" component={PythonVariables} />
+      <Route path="/tutorials/python/functions" component={PythonFunctions} />
+      <Route path="/tutorials/python/conditionals" component={PythonConditionals} />
+      <Route path="/tutorials/javascript/variables" component={JavaScriptVariables} />
+      <Route path="/tutorials/javascript/functions" component={JavaScriptFunctions} />
+      <Route path="/tutorials/javascript/conditionals" component={JavaScriptConditionals} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -20,46 +32,11 @@ function Router() {
 
 function App() {
   const languageContext = useLanguageProvider();
-  const [user, setUser] = useState<any>(null);
-
-  // Check for user on load and subscribe to auth changes
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-    });
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => {
-      listener?.subscription.unsubscribe();
-    };
-  }, []);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    window.location.reload();
-  };
 
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageContext.Provider value={languageContext}>
-        {user ? (
-          <>
-            <div className="p-4 text-right">
-              <button
-                onClick={handleLogout}
-                className="text-sm text-blue-600 hover:text-yellow-400 transition-colors"
-              >
-                Log out
-              </button>
-            </div>
-            <Router />
-          </>
-        ) : (
-          <AuthForm />
-        )}
+        <Router />
         <Toaster />
       </LanguageContext.Provider>
     </QueryClientProvider>
