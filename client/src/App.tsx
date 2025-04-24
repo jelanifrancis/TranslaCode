@@ -62,8 +62,8 @@ function App() {
     };
   }, []);
 
-  if (loading) return null;
-
+  if (loading) return <div>Loading...</div>;
+  if (!user) return <AuthForm />;
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageContext.Provider value={languageContext}>
