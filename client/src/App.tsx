@@ -18,13 +18,17 @@ import PythonLists from './pages/tutorials/PythonLists';
 import PythonLoops from './pages/tutorials/PythonLoops';
 import { LanguageContext, useLanguageProvider } from './hooks/useLanguage';
 import { supabase } from './supabaseClient';
+import Dashboard from './pages/Dashboard';
+import Navbar from './components/Navbar';
 import AuthForm from './components/AuthForm';
 
+// Router component
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/tutorials" component={Tutorials} />
+      <Route path="/dashboard" component={Dashboard} />
       <Route path="/tutorials/python/variables" component={PythonVariables} />
       <Route path="/tutorials/python/functions" component={PythonFunctions} />
       <Route path="/tutorials/python/conditionals" component={PythonConditionals} />
@@ -40,7 +44,8 @@ function Router() {
   );
 }
 
-function App() {
+// ✅ Clean final App
+export default function App() {
   const languageContext = useLanguageProvider();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -62,32 +67,23 @@ function App() {
     };
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (!user) return <AuthForm />;
+  if (loading) return <div className="text-center py-20">Loading...</div>;
+
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageContext.Provider value={languageContext}>
-        <div className="min-h-screen bg-white text-black px-4 py-2">
-          {user ? (
-            <>
-              <div className="flex justify-end mb-4">
-                <button
-                  className="text-sm text-blue-600 underline"
-                  onClick={() => supabase.auth.signOut()}
-                >
-                  Log Out
-                </button>
-              </div>
-              <Router />
-            </>
-          ) : (
+        {user ? (
+          <>
+            <Navbar />
+            <Router />
+          </>
+        ) : (
+          <div className="min-h-screen flex items-center justify-center bg-white text-black px-4 py-2">
             <AuthForm />
-          )}
-        </div>
+          </div>
+        )}
         <Toaster />
       </LanguageContext.Provider>
     </QueryClientProvider>
   );
 }
-
-export default App;
