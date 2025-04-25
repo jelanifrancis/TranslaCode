@@ -27,10 +27,10 @@ export default function AuthForm() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-blue-100 via-white to-yellow-100">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-blue-100 via-white to-yellow-100">
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl border border-gray-200">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold mb-2 text-blue-600">
+          <h2 className="text-3xl font-bold text-blue-600 mb-2">
             Welcome to TranslaCode!
           </h2>
           <p className="text-sm text-gray-600">
@@ -43,7 +43,7 @@ export default function AuthForm() {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
@@ -51,7 +51,7 @@ export default function AuthForm() {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
@@ -69,8 +69,8 @@ export default function AuthForm() {
         </form>
 
         <p
-          className="text-sm text-center mt-4 text-blue-500 hover:text-yellow-500 cursor-pointer transition"
           onClick={() => setAuthMode(authMode === 'signup' ? 'login' : 'signup')}
+          className="text-sm text-center mt-4 text-blue-500 hover:text-yellow-500 cursor-pointer transition"
         >
           {authMode === 'signup'
             ? 'Already have an account? Log in'
