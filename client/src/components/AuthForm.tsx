@@ -27,11 +27,16 @@ export default function AuthForm() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white px-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl border border-gray-200">
-        <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">
-          {authMode === 'signup' ? 'Create an Account' : 'Welcome Back'}
-        </h2>
+    <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-blue-100 via-white to-yellow-100">
+      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl border border-gray-200">
+        <div className="text-center mb-6">
+          <h2 className="text-3xl font-bold mb-2 text-blue-600">
+            Welcome to TranslaCode!
+          </h2>
+          <p className="text-sm text-gray-600">
+            Unlock the power of coding — in your language, at your pace.
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
