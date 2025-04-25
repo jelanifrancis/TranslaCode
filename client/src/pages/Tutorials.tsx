@@ -1,85 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { useLanguage } from '../hooks/useLanguage';
+import { supabase } from '../supabaseClient';
 
 export default function Tutorials() {
   const { currentLanguage } = useLanguage();
-  
-  // Tutorial data with translations
+  const [completedTutorials, setCompletedTutorials] = useState<string[]>([]);
+
+  // Fetch completed tutorials
+  useEffect(() => {
+    async function fetchProgress() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase
+          .from('progress')
+          .select('tutorial_slug')
+          .eq('user_id', user.id)
+          .eq('completed', true);
+        if (data) {
+          const slugs = data.map(item => item.tutorial_slug);
+          setCompletedTutorials(slugs);
+        }
+      }
+    }
+    fetchProgress();
+  }, []);
+
   const pythonTutorials = [
-    {
-      id: 'variables',
-      title: currentLanguage === 'en' ? 'Variables in Python' : 'Variables en Python',
-      description: currentLanguage === 'en' 
-        ? 'Learn how to store and manipulate data using variables in Python.'
-        : 'Aprende a almacenar y manipular datos usando variables en Python.',
-    },
-    {
-      id: 'functions',
-      title: currentLanguage === 'en' ? 'Functions in Python' : 'Funciones en Python',
-      description: currentLanguage === 'en'
-        ? 'Discover how to create reusable blocks of code with Python functions.'
-        : 'Descubre cómo crear bloques de código reutilizables con funciones de Python.',
-    },
-    {
-      id: 'conditionals',
-      title: currentLanguage === 'en' ? 'Conditionals in Python' : 'Condicionales en Python',
-      description: currentLanguage === 'en'
-        ? 'Master decision-making in your code with if, elif, and else statements.'
-        : 'Domina la toma de decisiones en tu código con declaraciones if, elif y else.',
-    },
-    {
-      id: 'loops',
-      title: currentLanguage === 'en' ? 'Loops in Python' : 'Bucles en Python',
-      description: currentLanguage === 'en'
-        ? 'Explore how to repeat actions efficiently with for and while loops.'
-        : 'Explora cómo repetir acciones eficientemente con bucles for y while.',
-    },
-    {
-      id: 'lists',
-      title: currentLanguage === 'en' ? 'Lists in Python' : 'Listas en Python',
-      description: currentLanguage === 'en'
-        ? 'Learn to store collections of items in organized, indexed lists.'
-        : 'Aprende a almacenar colecciones de elementos en listas organizadas e indexadas.',
-    }
+    { id: 'variables', title: currentLanguage === 'en' ? 'Variables in Python' : 'Variables en Python', description: currentLanguage === 'en' ? 'Learn how to store and manipulate data using variables in Python.' : 'Aprende a almacenar y manipular datos usando variables en Python.' },
+    { id: 'functions', title: currentLanguage === 'en' ? 'Functions in Python' : 'Funciones en Python', description: currentLanguage === 'en' ? 'Discover how to create reusable blocks of code with Python functions.' : 'Descubre cómo crear bloques de código reutilizables con funciones de Python.' },
+    { id: 'conditionals', title: currentLanguage === 'en' ? 'Conditionals in Python' : 'Condicionales en Python', description: currentLanguage === 'en' ? 'Master decision-making in your code with if, elif, and else statements.' : 'Domina la toma de decisiones en tu código con declaraciones if, elif y else.' },
+    { id: 'loops', title: currentLanguage === 'en' ? 'Loops in Python' : 'Bucles en Python', description: currentLanguage === 'en' ? 'Explore how to repeat actions efficiently with for and while loops.' : 'Explora cómo repetir acciones eficientemente con bucles for y while.' },
+    { id: 'lists', title: currentLanguage === 'en' ? 'Lists in Python' : 'Listas en Python', description: currentLanguage === 'en' ? 'Learn to store collections of items in organized, indexed lists.' : 'Aprende a almacenar colecciones de elementos en listas organizadas e indexadas.' }
   ];
-  
+
   const javascriptTutorials = [
-    {
-      id: 'variables',
-      title: currentLanguage === 'en' ? 'Variables in JavaScript' : 'Variables en JavaScript',
-      description: currentLanguage === 'en'
-        ? 'Learn how to store and manipulate data using variables in JavaScript.'
-        : 'Aprende a almacenar y manipular datos usando variables en JavaScript.',
-    },
-    {
-      id: 'functions',
-      title: currentLanguage === 'en' ? 'Functions in JavaScript' : 'Funciones en JavaScript',
-      description: currentLanguage === 'en'
-        ? 'Discover how to create reusable blocks of code with JavaScript functions.'
-        : 'Descubre cómo crear bloques de código reutilizables con funciones de JavaScript.',
-    },
-    {
-      id: 'conditionals',
-      title: currentLanguage === 'en' ? 'Conditionals in JavaScript' : 'Condicionales en JavaScript',
-      description: currentLanguage === 'en'
-        ? 'Master decision-making in your code with if, else if, and else statements.'
-        : 'Domina la toma de decisiones en tu código con declaraciones if, else if y else.',
-    },
-    {
-      id: 'loops',
-      title: currentLanguage === 'en' ? 'Loops in JavaScript' : 'Bucles en JavaScript',
-      description: currentLanguage === 'en'
-        ? 'Explore how to repeat actions efficiently with for, while, and do-while loops.'
-        : 'Explora cómo repetir acciones eficientemente con bucles for, while y do-while.',
-    },
-    {
-      id: 'arrays',
-      title: currentLanguage === 'en' ? 'Arrays in JavaScript' : 'Arrays en JavaScript',
-      description: currentLanguage === 'en'
-        ? 'Learn to store collections of items in organized, indexed arrays.'
-        : 'Aprende a almacenar colecciones de elementos en arrays organizados e indexados.',
-    }
+    { id: 'variables', title: currentLanguage === 'en' ? 'Variables in JavaScript' : 'Variables en JavaScript', description: currentLanguage === 'en' ? 'Learn how to store and manipulate data using variables in JavaScript.' : 'Aprende a almacenar y manipular datos usando variables en JavaScript.' },
+    { id: 'functions', title: currentLanguage === 'en' ? 'Functions in JavaScript' : 'Funciones en JavaScript', description: currentLanguage === 'en' ? 'Discover how to create reusable blocks of code with JavaScript functions.' : 'Descubre cómo crear bloques de código reutilizables con funciones de JavaScript.' },
+    { id: 'conditionals', title: currentLanguage === 'en' ? 'Conditionals in JavaScript' : 'Condicionales en JavaScript', description: currentLanguage === 'en' ? 'Master decision-making in your code with if, else if, and else statements.' : 'Domina la toma de decisiones en tu código con declaraciones if, else if y else.' },
+    { id: 'loops', title: currentLanguage === 'en' ? 'Loops in JavaScript' : 'Bucles en JavaScript', description: currentLanguage === 'en' ? 'Explore how to repeat actions efficiently with for, while, and do-while loops.' : 'Explora cómo repetir acciones eficientemente con bucles for, while y do-while.' },
+    { id: 'arrays', title: currentLanguage === 'en' ? 'Arrays in JavaScript' : 'Arrays en JavaScript', description: currentLanguage === 'en' ? 'Learn to store collections of items in organized, indexed arrays.' : 'Aprende a almacenar colecciones de elementos en arrays organizados e indexados.' }
   ];
 
   return (
@@ -94,7 +54,7 @@ export default function Tutorials() {
             : 'Aprende conceptos esenciales de programación para ayudarte a resolver desafíos de código.'}
         </p>
       </div>
-      
+
       <div className="grid md:grid-cols-2 gap-8">
         {/* Python Tutorials */}
         <div>
@@ -113,7 +73,12 @@ export default function Tutorials() {
               {pythonTutorials.map((tutorial) => (
                 <Link key={tutorial.id} href={`/tutorials/python/${tutorial.id}`}>
                   <div className="block px-4 py-3 hover:bg-blue-50 transition-colors cursor-pointer">
-                    <h3 className="font-medium text-lg text-blue-700">{tutorial.title}</h3>
+                    <h3 className="font-medium text-lg text-blue-700 flex items-center">
+                      {tutorial.title}
+                      {completedTutorials.includes(`python/${tutorial.id}`) && (
+                        <span className="ml-2 text-green-500">✅</span>
+                      )}
+                    </h3>
                     <p className="text-gray-600 text-sm mt-1">{tutorial.description}</p>
                   </div>
                 </Link>
@@ -121,7 +86,7 @@ export default function Tutorials() {
             </div>
           </div>
         </div>
-        
+
         {/* JavaScript Tutorials */}
         <div>
           <div className="bg-yellow-500 text-white px-4 py-3 rounded-t-lg flex items-center">
@@ -139,7 +104,12 @@ export default function Tutorials() {
               {javascriptTutorials.map((tutorial) => (
                 <Link key={tutorial.id} href={`/tutorials/javascript/${tutorial.id}`}>
                   <div className="block px-4 py-3 hover:bg-yellow-50 transition-colors cursor-pointer">
-                    <h3 className="font-medium text-lg text-yellow-700">{tutorial.title}</h3>
+                    <h3 className="font-medium text-lg text-yellow-700 flex items-center">
+                      {tutorial.title}
+                      {completedTutorials.includes(`javascript/${tutorial.id}`) && (
+                        <span className="ml-2 text-green-500">✅</span>
+                      )}
+                    </h3>
                     <p className="text-gray-600 text-sm mt-1">{tutorial.description}</p>
                   </div>
                 </Link>
@@ -148,7 +118,7 @@ export default function Tutorials() {
           </div>
         </div>
       </div>
-      
+
       <div className="mt-8 text-center">
         <Link href="/">
           <span className="text-blue-600 hover:text-blue-800 font-medium cursor-pointer">
