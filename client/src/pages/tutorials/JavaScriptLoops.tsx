@@ -4,14 +4,30 @@ import Tutorial from '../../components/Tutorial';
 export default function JavaScriptLoops() {
   return (
     <Tutorial
-      title="Loops in JavaScript"
-      concept="Core Concept"
-      objective="Explore how to repeat actions efficiently with for, while, and do-while loops."
-      explanation={`Loops are used to repeat a block of code multiple times. They're essential for processing collections of data, performing repeated calculations, or continuing actions until a certain condition is met.
+      title={{
+        en: "Loops in JavaScript",
+        es: "Bucles en JavaScript",
+      }}
+      concept={{
+        en: "Core Concept",
+        es: "Concepto Clave",
+      }}
+      objective={{
+        en: "Explore how to repeat actions efficiently with for, while, and do-while loops.",
+        es: "Explora cómo repetir acciones de manera eficiente con bucles for, while y do-while.",
+      }}
+      explanation={{
+        en: `Loops are used to repeat a block of code multiple times. They're essential for processing collections of data, performing repeated calculations, or continuing actions until a certain condition is met.
 
 JavaScript has several types of loops: for loops, while loops, do-while loops, and enhanced for...of and for...in loops. A for loop runs a specific number of times based on a counter. A while loop continues as long as a specified condition remains true. A do-while loop is similar to a while loop, but it always executes the code block at least once.
 
-Using loops can dramatically reduce code duplication and make your programs more efficient and readable. Different loop types serve different purposes, giving you flexibility in how you implement repetition in your code.`}
+Using loops can dramatically reduce code duplication and make your programs more efficient and readable. Different loop types serve different purposes, giving you flexibility in how you implement repetition in your code.`,
+        es: `Los bucles se utilizan para repetir un bloque de código múltiples veces. Son esenciales para procesar colecciones de datos, realizar cálculos repetidos o continuar acciones hasta que se cumpla una condición determinada.
+
+JavaScript tiene varios tipos de bucles: bucles for, bucles while, bucles do-while, y los bucles mejorados for...of y for...in. Un bucle for se ejecuta un número específico de veces basado en un contador. Un bucle while continúa mientras una condición especificada siga siendo verdadera. Un bucle do-while es similar a un while, pero siempre ejecuta el bloque de código al menos una vez.
+
+Utilizar bucles puede reducir drásticamente la duplicación de código y hacer que tus programas sean más eficientes y legibles. Diferentes tipos de bucles sirven para diferentes propósitos, brindándote flexibilidad en cómo implementar la repetición en tu código.`
+      }}
       language="javascript"
       examples={[
         {
@@ -114,7 +130,10 @@ for (let i = 0; i < 10; i++) {
 // 5
 // 7
 // 9`,
-          explanation: "This example showcases different types of loops in JavaScript, including traditional for loops, modern for...of and for...in loops, while loops, do-while loops, and how to control loop flow with break and continue statements."
+          explanation: {
+            en: "This example showcases different types of loops in JavaScript, including traditional for loops, modern for...of and for...in loops, while loops, do-while loops, and how to control loop flow with break and continue statements.",
+            es: "Este ejemplo muestra diferentes tipos de bucles en JavaScript, incluyendo bucles for tradicionales, bucles modernos for...of y for...in, bucles while, bucles do-while, y cómo controlar el flujo de los bucles usando las instrucciones break y continue."
+          }
         }
       ]}
     />
