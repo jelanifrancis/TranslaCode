@@ -32,10 +32,11 @@ export default function Tutorial({
   examples = [],
   backLink = '/tutorials'
 }: TutorialProps) {
-  const { currentLanguage } = useLanguage();
+  const languageContext = useLanguage();   // ✅ Added this!!
+  const currentLanguage = languageContext.currentLanguage;  // ✅ Also added this!!
+  
   const [completed, setCompleted] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const [userId, setUserId] = useState<string | null>(null);
 
 useEffect(() => {
@@ -106,6 +107,7 @@ useEffect(() => {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
+      {/* Back Link */}
       <div className="mb-6 flex items-center">
         <Link href={backLink}>
           <span className="flex items-center text-blue-500 hover:text-blue-700 cursor-pointer">
@@ -116,7 +118,18 @@ useEffect(() => {
           </span>
         </Link>
       </div>
-      
+  
+      {/* Language Toggle */}
+      <div className="flex justify-end mb-6">
+        <button
+          onClick={() => languageContext.setCurrentLanguage(languageContext.currentLanguage === 'en' ? 'es' : 'en')}
+          className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-blue-200 transition"
+        >
+          {languageContext.currentLanguage === 'en' ? 'Switch to Spanish' : 'Cambiar a Inglés'}
+        </button>
+      </div>
+  
+      {/* Main Tutorial Card */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
         <div className={`py-4 px-6 ${language === 'python' ? 'bg-blue-600' : 'bg-yellow-500'} text-white`}>
           <div className="flex items-center justify-between">
@@ -127,18 +140,21 @@ useEffect(() => {
           </div>
           <p className="mt-1 text-white/90 font-light">{getContent(concept)}</p>
         </div>
-        
+  
         <div className="p-6">
+          {/* Objective */}
           <div className="mb-6">
             <h2 className="text-lg font-semibold mb-2">{translations.objective}</h2>
             <p className="text-gray-700">{getContent(objective)}</p>
           </div>
-          
+  
+          {/* Explanation */}
           <div className="mb-6">
             <h2 className="text-lg font-semibold mb-2">{translations.explanation}</h2>
             <p className="text-gray-700 whitespace-pre-line">{getContent(explanation)}</p>
           </div>
-          
+  
+          {/* Examples */}
           {examples.length > 0 && (
             <div className="mb-6">
               <h2 className="text-lg font-semibold mb-2">{translations.examples}</h2>
@@ -152,8 +168,8 @@ useEffect(() => {
               ))}
             </div>
           )}
-
-          {/* ✅ Mark as Complete Button */}
+  
+          {/* Mark as Complete Button */}
           <div className="mt-8 flex justify-center">
             <button
               onClick={handleComplete}
@@ -167,8 +183,8 @@ useEffect(() => {
               {completed ? translations.completed : loading ? 'Loading...' : translations.markComplete}
             </button>
           </div>
-
-          {/* Links to explore more */}
+  
+          {/* Links */}
           <div className="mt-10 pt-6 border-t border-gray-100 text-center">
             <Link href="/tutorials">
               <span className="text-blue-500 hover:text-blue-700 cursor-pointer">

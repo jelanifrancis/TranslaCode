@@ -1,23 +1,24 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { translations, type LanguageKey, type Translations } from '../data/translations';
 
-// Create a context for language
+// Define the context type
 type LanguageContextType = {
   currentLanguage: LanguageKey;
-  setLanguage: (language: LanguageKey) => void;
+  setCurrentLanguage: (language: LanguageKey) => void; // Fix the name to match!
   t: Translations;
 };
 
+// Create the Language Context
 export const LanguageContext = createContext<LanguageContextType>({
   currentLanguage: 'en',
-  setLanguage: () => {},
+  setCurrentLanguage: () => {}, // Fix the name here too!
   t: translations.en
 });
 
-// Custom hook to use the language context
+// Custom hook to access the context
 export const useLanguage = () => useContext(LanguageContext);
 
-// Hook for language provider
+// Language Provider hook
 export const useLanguageProvider = () => {
   const [currentLanguage, setCurrentLanguage] = useState<LanguageKey>('en');
   const [t, setT] = useState<Translations>(translations.en);
@@ -26,9 +27,5 @@ export const useLanguageProvider = () => {
     setT(translations[currentLanguage]);
   }, [currentLanguage]);
 
-  const setLanguage = (language: LanguageKey) => {
-    setCurrentLanguage(language);
-  };
-
-  return { currentLanguage, setLanguage, t };
+  return { currentLanguage, setCurrentLanguage, t }; // Notice: setCurrentLanguage not setLanguage
 };
