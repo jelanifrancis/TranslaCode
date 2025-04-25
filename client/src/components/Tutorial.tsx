@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { useLanguage } from '../hooks/useLanguage';
-import { supabase } from '../supabaseClient'; // Make sure your supabaseClient is correct
+import { supabase } from '../supabaseClient';
 
 interface BilingualContent {
   en: string;
@@ -32,26 +32,25 @@ export default function Tutorial({
   examples = [],
   backLink = '/tutorials'
 }: TutorialProps) {
-  const languageContext = useLanguage();   // ✅ Added this!!
-  const currentLanguage = languageContext.currentLanguage;  // ✅ Also added this!!
+  const { currentLanguage, setLanguage } = useLanguage();  // ✅ Correct here
   
   const [completed, setCompleted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
 
-useEffect(() => {
-  async function fetchUser() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) setUserId(user.id);
-  }
-  fetchUser();
-}, []);
-  const slug = window.location.pathname.replace('/tutorials/', ''); // e.g. "python/variables"
+  useEffect(() => {
+    async function fetchUser() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) setUserId(user.id);
+    }
+    fetchUser();
+  }, []);
 
-  // Helper to get text in current language
+  const slug = window.location.pathname.replace('/tutorials/', '');
+
+  // Helper to get the right language content
   const getContent = (content: BilingualContent) => content[currentLanguage];
 
-  // Fixed UI text translations
   const translations = {
     backToTutorials: currentLanguage === 'en' ? 'Back to Tutorials' : 'Volver a Tutoriales',
     objective: currentLanguage === 'en' ? 'Objective' : 'Objetivo',
@@ -63,7 +62,6 @@ useEffect(() => {
     completed: currentLanguage === 'en' ? 'Completed!' : '¡Completado!',
   };
 
-  // Fetch if user already completed this tutorial
   useEffect(() => {
     if (userId) {
       supabase
@@ -73,14 +71,11 @@ useEffect(() => {
         .eq('tutorial_slug', slug)
         .single()
         .then(({ data, error }) => {
-          if (data?.completed) {
-            setCompleted(true);
-          }
+          if (data?.completed) setCompleted(true);
         });
     }
   }, [userId, slug]);
 
-  // Mark tutorial as complete
   const handleComplete = async () => {
     if (!userId) {
       alert('Please log in to track your progress.');
@@ -89,13 +84,13 @@ useEffect(() => {
     setLoading(true);
 
     const { error } = await supabase
-  .from('progress')
-  .upsert({
-    user_id: userId,
-    tutorial_slug: slug,
-    completed: true,
-    completed_at: new Date(),
-  }, { onConflict: 'user_id,tutorial_slug' });
+      .from('progress')
+      .upsert({
+        user_id: userId,
+        tutorial_slug: slug,
+        completed: true,
+        completed_at: new Date(),
+      }, { onConflict: 'user_id,tutorial_slug' });
 
     if (error) {
       console.error('Error marking complete:', error.message);
@@ -118,18 +113,18 @@ useEffect(() => {
           </span>
         </Link>
       </div>
-  
-      {/* Language Toggle */}
+
+      {/* Language Switch Button */}
       <div className="flex justify-end mb-6">
         <button
-          onClick={() => languageContext.setCurrentLanguage(languageContext.currentLanguage === 'en' ? 'es' : 'en')}
+          onClick={() => setLanguage(currentLanguage === 'en' ? 'es' : 'en')} // ✅ Fixed
           className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-blue-200 transition"
         >
-          {languageContext.currentLanguage === 'en' ? 'Switch to Spanish' : 'Cambiar a Inglés'}
+          {currentLanguage === 'en' ? 'Switch to Spanish' : 'Cambiar a Inglés'}
         </button>
       </div>
-  
-      {/* Main Tutorial Card */}
+
+      {/* Tutorial Card */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
         <div className={`py-4 px-6 ${language === 'python' ? 'bg-blue-600' : 'bg-yellow-500'} text-white`}>
           <div className="flex items-center justify-between">
@@ -140,20 +135,20 @@ useEffect(() => {
           </div>
           <p className="mt-1 text-white/90 font-light">{getContent(concept)}</p>
         </div>
-  
+
         <div className="p-6">
           {/* Objective */}
           <div className="mb-6">
             <h2 className="text-lg font-semibold mb-2">{translations.objective}</h2>
             <p className="text-gray-700">{getContent(objective)}</p>
           </div>
-  
+
           {/* Explanation */}
           <div className="mb-6">
             <h2 className="text-lg font-semibold mb-2">{translations.explanation}</h2>
             <p className="text-gray-700 whitespace-pre-line">{getContent(explanation)}</p>
           </div>
-  
+
           {/* Examples */}
           {examples.length > 0 && (
             <div className="mb-6">
@@ -168,8 +163,8 @@ useEffect(() => {
               ))}
             </div>
           )}
-  
-          {/* Mark as Complete Button */}
+
+          {/* Mark Complete */}
           <div className="mt-8 flex justify-center">
             <button
               onClick={handleComplete}
@@ -183,7 +178,7 @@ useEffect(() => {
               {completed ? translations.completed : loading ? 'Loading...' : translations.markComplete}
             </button>
           </div>
-  
+
           {/* Links */}
           <div className="mt-10 pt-6 border-t border-gray-100 text-center">
             <Link href="/tutorials">
