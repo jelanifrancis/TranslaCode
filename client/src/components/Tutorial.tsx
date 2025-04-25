@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { useLanguage } from '../hooks/useLanguage';
+import { supabase } from '../supabaseClient'; // Make sure your supabaseClient is correct
 
 interface BilingualContent {
   en: string;
@@ -32,19 +33,77 @@ export default function Tutorial({
   backLink = '/tutorials'
 }: TutorialProps) {
   const { currentLanguage } = useLanguage();
-  
-  // Get content based on current language
+  const [completed, setCompleted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [userId, setUserId] = useState<string | null>(null);
+
+useEffect(() => {
+  async function fetchUser() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) setUserId(user.id);
+  }
+  fetchUser();
+}, []);
+  const slug = window.location.pathname.replace('/tutorials/', ''); // e.g. "python/variables"
+
+  // Helper to get text in current language
   const getContent = (content: BilingualContent) => content[currentLanguage];
-  
-  // Translate some fixed UI elements
+
+  // Fixed UI text translations
   const translations = {
     backToTutorials: currentLanguage === 'en' ? 'Back to Tutorials' : 'Volver a Tutoriales',
     objective: currentLanguage === 'en' ? 'Objective' : 'Objetivo',
     explanation: currentLanguage === 'en' ? 'Explanation' : 'Explicación',
     examples: currentLanguage === 'en' ? 'Examples' : 'Ejemplos',
     exploreMore: currentLanguage === 'en' ? 'Explore more tutorials' : 'Explorar más tutoriales',
-    backToChallenges: currentLanguage === 'en' ? 'Back to challenges' : 'Volver a desafíos'
+    backToChallenges: currentLanguage === 'en' ? 'Back to challenges' : 'Volver a desafíos',
+    markComplete: currentLanguage === 'en' ? 'Mark as Complete' : 'Marcar como Completado',
+    completed: currentLanguage === 'en' ? 'Completed!' : '¡Completado!',
   };
+
+  // Fetch if user already completed this tutorial
+  useEffect(() => {
+    if (userId) {
+      supabase
+        .from('progress')
+        .select('completed')
+        .eq('user_id', userId)
+        .eq('tutorial_slug', slug)
+        .single()
+        .then(({ data, error }) => {
+          if (data?.completed) {
+            setCompleted(true);
+          }
+        });
+    }
+  }, [userId, slug]);
+
+  // Mark tutorial as complete
+  const handleComplete = async () => {
+    if (!userId) {
+      alert('Please log in to track your progress.');
+      return;
+    }
+    setLoading(true);
+
+    const { error } = await supabase
+  .from('progress')
+  .upsert({
+    user_id: userId,
+    tutorial_slug: slug,
+    completed: true,
+    completed_at: new Date(),
+  }, { onConflict: 'user_id,tutorial_slug' });
+
+    if (error) {
+      console.error('Error marking complete:', error.message);
+    } else {
+      setCompleted(true);
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <div className="mb-6 flex items-center">
@@ -85,7 +144,7 @@ export default function Tutorial({
               <h2 className="text-lg font-semibold mb-2">{translations.examples}</h2>
               {examples.map((example, index) => (
                 <div key={index} className="mb-4">
-                  <div className="bg-gray-50 p-4 rounded-md mb-2 font-mono text-sm whitespace-pre">
+                  <div className="bg-gray-50 p-4 rounded-md mb-2 font-mono text-sm whitespace-pre overflow-x-auto">
                     {example.code}
                   </div>
                   <p className="text-gray-600 text-sm">{getContent(example.explanation)}</p>
@@ -93,13 +152,33 @@ export default function Tutorial({
               ))}
             </div>
           )}
-          
-          <div className="mt-8 pt-4 border-t border-gray-100">
+
+          {/* ✅ Mark as Complete Button */}
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={handleComplete}
+              disabled={completed || loading}
+              className={`px-6 py-3 rounded-lg font-semibold transition ${
+                completed
+                  ? 'bg-green-500 text-white cursor-not-allowed'
+                  : 'bg-blue-600 text-white hover:bg-yellow-400 hover:text-blue-800'
+              }`}
+            >
+              {completed ? translations.completed : loading ? 'Loading...' : translations.markComplete}
+            </button>
+          </div>
+
+          {/* Links to explore more */}
+          <div className="mt-10 pt-6 border-t border-gray-100 text-center">
             <Link href="/tutorials">
-              <span className="text-blue-500 hover:text-blue-700 cursor-pointer">{translations.exploreMore}</span>
+              <span className="text-blue-500 hover:text-blue-700 cursor-pointer">
+                {translations.exploreMore}
+              </span>
             </Link>
             <Link href="/">
-              <span className="ml-4 text-blue-500 hover:text-blue-700 cursor-pointer">{translations.backToChallenges}</span>
+              <span className="ml-4 text-blue-500 hover:text-blue-700 cursor-pointer">
+                {translations.backToChallenges}
+              </span>
             </Link>
           </div>
         </div>
