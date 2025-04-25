@@ -18,36 +18,40 @@ export default function Home() {
   const [completedChallenges, setCompletedChallenges] = useState<string[]>([]);
   const [programmingLanguage, setProgrammingLanguage] = useState<ProgrammingLanguage>('javascript');
   const [showLibrary, setShowLibrary] = useState(false);
-  
-  const currentChallenge = challenges[currentChallengeKey];
-  
-  const [code, setCode] = useState(currentChallenge.defaultCode[programmingLanguage]);
+
+  const [code, setCode] = useState(challenges['addNumbers'].defaultCode['javascript']);
   const [resultStatus, setResultStatus] = useState<'success' | 'error' | null>(null);
 
-  // Update code when programming language or challenge changes
   useEffect(() => {
-    setCode(currentChallenge.defaultCode[programmingLanguage]);
+    setCode(challenges[currentChallengeKey].defaultCode[programmingLanguage]);
     setResultStatus(null);
-  }, [programmingLanguage, currentChallengeKey, currentChallenge]);
+  }, [programmingLanguage, currentChallengeKey]);
+
+  const currentChallengeData = challenges[currentChallengeKey]; // <-- MOVE IT HERE
+  const currentChallengeLocalized = currentChallengeData[currentLanguage]; // <-- AND THIS
+
+  // (the rest of your code stays exactly the same)
+  useEffect(() => {
+    setCode(currentChallengeData.defaultCode[programmingLanguage]);
+    setResultStatus(null);
+  }, [programmingLanguage, currentChallengeKey]);
 
   const handleCodeChange = (newCode: string) => {
     setCode(newCode);
   };
 
   const handleSubmitCode = () => {
-    const isCorrect = currentChallenge.validator(code, programmingLanguage);
+    const isCorrect = currentChallengeData.validator(code, programmingLanguage);
     setResultStatus(isCorrect ? 'success' : 'error');
-    
-    // If correct and not already completed, add to completed challenges
+
     if (isCorrect && !completedChallenges.includes(currentChallengeKey)) {
       setCompletedChallenges([...completedChallenges, currentChallengeKey]);
     }
-    
-    // Scroll to the result message
+
     setTimeout(() => {
-      document.getElementById('result-container')?.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'nearest' 
+      document.getElementById('result-container')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
       });
     }, 100);
   };
@@ -55,14 +59,13 @@ export default function Home() {
   const handleNextChallenge = () => {
     const challengeKeys = Object.keys(challenges);
     const currentIndex = challengeKeys.indexOf(currentChallengeKey);
-    
+
     if (currentIndex < challengeKeys.length - 1) {
       setCurrentChallengeKey(challengeKeys[currentIndex + 1]);
       setResultStatus(null);
     }
   };
 
-  // Calculate if there are more challenges available
   const hasMoreChallenges = () => {
     const challengeKeys = Object.keys(challenges);
     const currentIndex = challengeKeys.indexOf(currentChallengeKey);
@@ -93,22 +96,21 @@ export default function Home() {
           <LanguageToggle />
         </div>
         
-        <ChallengeCard challenge={currentChallenge[currentLanguage]} />
-        
+        <ChallengeCard challenge={currentChallengeLocalized} />
+
         <div className="my-4">
           <ProgrammingLanguageToggle
             selectedLanguage={programmingLanguage}
             onLanguageChange={setProgrammingLanguage}
           />
         </div>
-        
+
         <CodeEditor code={code} onCodeChange={handleCodeChange} />
         <ActionButton onClick={handleSubmitCode} />
-        
+
         <div id="result-container">
           <ResultMessage status={resultStatus} />
-          
-          {/* Show Next Challenge button when solution is correct and there are more challenges */}
+
           {resultStatus === 'success' && hasMoreChallenges() && (
             <div className="mt-4">
               <button
@@ -119,8 +121,7 @@ export default function Home() {
               </button>
             </div>
           )}
-          
-          {/* Show completion message when all challenges are done */}
+
           {resultStatus === 'success' && !hasMoreChallenges() && completedChallenges.length === Object.keys(challenges).length && (
             <div className="mt-4 p-4 bg-yellow-100 text-yellow-800 rounded-md">
               {t.noMoreChallenges}
@@ -128,10 +129,9 @@ export default function Home() {
           )}
         </div>
       </main>
-      
+
       <Footer />
-      
-      {/* Challenge Library Modal */}
+
       {showLibrary && (
         <ChallengeLibrary
           completedChallenges={completedChallenges}

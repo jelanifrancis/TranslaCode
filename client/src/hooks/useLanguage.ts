@@ -4,14 +4,14 @@ import { translations, type LanguageKey, type Translations } from '../data/trans
 // Define the context type
 type LanguageContextType = {
   currentLanguage: LanguageKey;
-  setCurrentLanguage: (language: LanguageKey) => void; // Fix the name to match!
+  setLanguage: (language: LanguageKey) => void; // ✅ Must be 'setLanguage'
   t: Translations;
 };
 
 // Create the Language Context
 export const LanguageContext = createContext<LanguageContextType>({
   currentLanguage: 'en',
-  setCurrentLanguage: () => {}, // Fix the name here too!
+  setLanguage: () => {}, // ✅ Must be 'setLanguage'
   t: translations.en
 });
 
@@ -27,5 +27,10 @@ export const useLanguageProvider = () => {
     setT(translations[currentLanguage]);
   }, [currentLanguage]);
 
-  return { currentLanguage, setCurrentLanguage, t }; // Notice: setCurrentLanguage not setLanguage
+  // ✅ Here we manually create the setLanguage function!
+  const setLanguage = (language: LanguageKey) => {
+    setCurrentLanguage(language);
+  };
+
+  return { currentLanguage, setLanguage, t };
 };
