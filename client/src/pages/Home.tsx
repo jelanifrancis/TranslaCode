@@ -11,6 +11,7 @@ import Footer from '../components/Footer';
 import LanguageToggle from '../components/LanguageToggle';
 import ProgrammingLanguageToggle from '../components/ProgrammingLanguageToggle';
 import ChallengeLibrary from '../components/ChallengeLibrary';
+import { supabase } from '../supabaseClient';
 
 export default function Home() {
   const { t, currentLanguage } = useLanguage();
@@ -39,19 +40,49 @@ export default function Home() {
   const handleCodeChange = (newCode: string) => {
     setCode(newCode);
   };
+  const markChallengeComplete = async (challengeKey: string) => {
+    const { data: { user } } = await supabase.auth.getUser();
+  
+    if (!user) {
+      alert('Please log in to track your challenge progress.');
+      return;
+    }
+    console.log('Inside markChallengeComplete', { userId: user.id, challengeKey, programmingLanguage });
 
-  const handleSubmitCode = () => {
-    const isCorrect = currentChallengeData.validator(code, programmingLanguage);
+    const { error } = await supabase
+      .from('challenge_progress') // <-- name of your new Supabase table
+      .upsert({
+        user_id: user.id,
+        challenge_key: challengeKey,
+        programming_language: programmingLanguage, //
+        completed: true,
+        completed_at: new Date()
+      }, { onConflict: 'user_id,challenge_key,programming_language' });
+  
+    if (error) {
+      console.error('Error updating challenge progress:', error.message);
+    } else {
+      console.log('Challenge progress saved!');
+    }
+  };
+
+  const handleSubmitCode = async () => {
+    const isCorrect = challenges[currentChallengeKey].validator(code, programmingLanguage);
+    console.log('Validator result:', isCorrect); //
+    console.log('Current Challenge Key:', currentChallengeKey);
+    console.log('Programming Language:', programmingLanguage);
+
     setResultStatus(isCorrect ? 'success' : 'error');
-
+  
     if (isCorrect && !completedChallenges.includes(currentChallengeKey)) {
       setCompletedChallenges([...completedChallenges, currentChallengeKey]);
+      await markChallengeComplete(currentChallengeKey); // now await is valid
     }
-
+  
     setTimeout(() => {
-      document.getElementById('result-container')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest'
+      document.getElementById('result-container')?.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'nearest' 
       });
     }, 100);
   };
