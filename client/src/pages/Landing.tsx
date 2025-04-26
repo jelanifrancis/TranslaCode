@@ -63,7 +63,7 @@ export default function Landing() {
             Learn to Code in Two Languages with TranslaCode
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto">
-            Unlock your coding potential with the world's first bilingual interactive coding platform. Learn programming in English and Spanish.
+            Unlock your coding potential with our interactive coding platform. Learn programming in English and Spanish.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button primary href="/signin" className="animate-pulse-scale">Start Learning Free</Button>
