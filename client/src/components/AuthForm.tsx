@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
+import { useLocation } from 'wouter';
 
 export default function AuthForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [loading, setLoading] = useState(false);
+  const [, navigate] = useLocation(); // <-- ADD this line for redirecting
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,11 +17,16 @@ export default function AuthForm() {
       if (authMode === 'signup') {
         const { error } = await supabase.auth.signUp({ email, password });
         if (error) alert(error.message);
-        else alert('Check your email to confirm your account!');
+        else {
+          alert('Check your email to confirm your account!');
+          navigate('/'); // Optionally redirect even after signup
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) alert(error.message);
-        else alert('Logged in!');
+        else {
+          navigate('/'); // <-- Redirect to home immediately
+        }
       }
     } finally {
       setLoading(false);

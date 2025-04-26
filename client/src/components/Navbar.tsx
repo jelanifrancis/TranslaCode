@@ -36,7 +36,7 @@ export default function Navbar() {
   return (
     <nav className="flex items-center justify-between px-6 py-4 bg-blue-600 text-white">
       {/* Logo */}
-      <Link href="/">
+      <Link href="/home">
         <span className="text-xl font-bold cursor-pointer hover:text-yellow-300 transition">
           TranslaCode
         </span>
@@ -50,8 +50,8 @@ export default function Navbar() {
           </span>
         )}
 
-        <Link href="/">
-          <span className={linkClasses("/")}>
+        <Link href="/home">
+          <span className={linkClasses("/home")}>
             Home
           </span>
         </Link>
